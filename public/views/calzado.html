@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Sport</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/styles/base_template.css">
+    <link rel="stylesheet" href="/assets/styles/product_display.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/assets/scripts/base_script.js"></script>
+</head>
+<body class="d-flex flex-column">
+    <!-- Include Navbar -->
+    <div id="contenido-navbar"></div>
+
+
+    <div id="page-content">
+        <h1 class="mb-0 p-3 ">Calzado</h1>
+        <hr>
+
+        <div class="productsContainer row">
+            <div class="sidenavbar col-3 col-sm-2 form-check filter">
+                <h3>Filtros</h3>
+                <div class="gender col-12 pt-1 pb-3">
+                    <p><strong>Genero</strong></p>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input menFilter" type="checkbox" value="Hombre" id="men-filter">
+                        <label class="form-check-label" for="men-filter">Hombre</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input" type="checkbox" value="Mujer" id="women-filter">
+                        <label class="form-check-label" for="women-filter">Mujer</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input" type="checkbox" value="Unisex" id="unisex">
+                        <label class="form-check-label" for="unisex">Unisex</label>
+                    </div>
+                </div>
+                <div class="price col-12 pt-1 pb-3 border-top border-2">
+                    <p><strong>Price</strong></p>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input price" type="checkbox" value="500" id="first-price-limit">
+                        <label class="form-check-label" for="first-price-limit">Menor a $500</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input price" type="checkbox" value="1500" id="second-price-limit">
+                        <label class="form-check-label price" for="second-price-limit">Menor a $1500</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input price" type="checkbox" value="2500" id="third-price-limit">
+                        <label class="form-check-label" for="third-price-limit">Menor a $2500</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input price" type="checkbox" value="999999" id="fourth-price-limit">
+                        <label class="form-check-label" for="fourth-price-limit">Todos los precios</label>
+                    </div>
+                </div>
+                <div class="brand col-12 pt-1 pb-3 border-top border-2">
+                    <p><strong>Marca</strong></p>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input menFilter" type="checkbox" value="Nike" id="nike">
+                        <label class="form-check-label" for="nike">Nike</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input" type="checkbox" value="Adidas" id="adidas">
+                        <label class="form-check-label" for="adidas">Adidas</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input" type="checkbox" value="Puma" id="puma">
+                        <label class="form-check-label" for="puma">Puma</label>
+                    </div>
+                    <div class="filter-sidebar">
+                        <input class="form-check-input" type="checkbox" value="Under Armour" id="under-armour">
+                        <label class="form-check-label" for="under-armour">Under Armour</label>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-secondary" id="apply-filters" onclick="filter('Calzado')">Apply</button>
+                </div>
+            </div>
+            <div class="container col-9 col-sm-10">
+                <div class="row product-container">  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Footer -->
+    <div id="contenido-footer"></div>
+    <script src="/assets/scripts/loadTemplates.js"></script>
+    <script src="/assets/scripts/filterFeature.js"></script>
+    <script>
+        loadData('Calzado');
+    </script>
+    <script src="/assets/scripts/getProduct.js"></script>
+    <script src="/assets/scripts/searchBar.js"></script>
+
+
+</body>
+</html>

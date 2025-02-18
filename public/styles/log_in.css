@@ -1,0 +1,53 @@
+#log-in-account{
+    margin: 0;
+}
+
+.btn-log-in{
+    border: solid 1px #343a40;
+}
+
+.btn-log-in:hover{
+    background-color: #343a40;
+    color: #FFF;
+}
+.log-in-links{
+    color:blue;
+}
+
+@media (min-width: 768px) and (max-width: 929px){
+    .send{
+        display: flex;
+        flex-direction: column;
+    }
+    .politics-container{
+        display: flex;
+    }
+    .politics-container > label{
+        margin-left: 2px;
+    }
+}
+@media (max-width: 767px) {
+    #log-in-account{
+        margin: auto;
+    }
+    .log-in{
+        padding: 0 20px;
+    }
+
+    .sign-up{
+        margin: 10px;
+        padding: 0 20px;
+        border-top: 2px solid  #b5b5b5;
+    }
+
+    #flexCheckDefault{
+        width: 25px ;
+        height: 15px ;
+        margin: 5px;
+    }
+    .politics-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Sport</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/styles/base_template.css">
+    <link rel="stylesheet" href="/assets/styles/log_in.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
+    <script src="/assets/scripts/base_script.js"></script>
+</head>
+<body class="d-flex flex-column">
+    <!-- Include Navbar -->
+    <div id="contenido-navbar"></div>
+
+    <main id="page-content">
+        
+        <h1 class="w-25 px-3" id="log-in-account">Cuenta</h1>
+        <hr>
+        <div class="row col-md-12 justify-content-center">
+            <div class="log-in col-md-4 border-end border-2">
+                <h3 >Iniciar sesión</h3>
+                <form method="POST" action="/login/iniciar_sesion" id="loginForm">
+                    <input type="email" placeholder="Correo electrónico" name="correo" class="form-control my-2" required>
+                    <input type="password" placeholder="Contraseña" name="contraseña" class="form-control my-2" required>
+                    <div class="col-lg-12 send text-center">
+                        <button class="btn btn-log-in"> Iniciar sesión</button>
+                        <a href="" class="log-in-links">¿Olvidó su contraseña?</a>
+                    </div>
+                </form>
+            </div>
+            <div class="sign-up col-md-4" >
+                <h3>Registrarse</h3>
+                <form method="POST" action="/login/crear_usuario" id="registerForm">
+                    <input type="text" class="form-control mb-2" name="nombre" placeholder="Nombre(s)" required>
+                    <input type="text" class="form-control mb-2" name="apellido" placeholder="Apellidos" required>
+                    <input type="text" class="form-control mb-2" name="telefono" placeholder="Telefono" required>
+                    <input type="email" class="form-control mb-2" name="correo" id="correo" placeholder="Correo electrónico" required>
+                    <input type="email" class="form-control mb-2" name="confirmarCorreo" id="confirmarCorreo" placeholder="Confirma tu correo" required>
+                    <input type="password" class="form-control mb-2" name="contraseña" id="contraseña" placeholder="Contraseña" required>
+                    <input type="password" class="form-control mb-2" name="confirmarContraseña" id="confirmarContraseña" placeholder="Confirmar contraseña" required>
+                    <div class="politics-container">
+                        <input class="form-check-input  col-md-1" type="checkbox" value="" id="flexCheckDefault" required>
+                        <label class="form-check-label  col-md-11 " >
+                            Al registrar una cuenta, aceptas que has leido y que entendiste 
+                            <a href="/terminos" class="log-in-links">Términos y condiciones</a> y da su consentimiento expreso para 
+                            el procesamiento de sus datos personales bajo la <a href="" class="terminos-politica">Politica de Privacidad</a>.
+                        </label>   
+                    </div>
+                    <button class="btn btn-log-in m-2"> Iniciar sesión</button>
+                </form>
+            </div>
+        </div>
+        <script src="/assets/scripts/createuser_script.js"></script>
+    </main>
+        
+    <!-- Include Footer -->
+    <div id="contenido-footer"></div>
+    <script src="/assets/scripts/searchBar.js"></script>
+
+</body>
+</html>
+
+
+

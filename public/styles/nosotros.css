@@ -1,0 +1,20 @@
+
+.btn-log-in{
+    border: solid 1px #343a40;
+}
+
+.btn-log-in:hover{
+    background-color: #343a40;
+    color: #FFF;
+}
+.log-in-links{
+    color:blue;
+}
+
+
+
+@media (max-width: 800px) {
+    .ubicaciones > iframe{
+        height: 200px;
+    }
+}

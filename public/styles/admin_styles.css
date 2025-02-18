@@ -1,0 +1,71 @@
+.admin-product-container {
+    margin: 10px auto;
+    max-width: 1400px;
+    height: 100%;
+
+}
+.cards-container {
+    height: auto;
+    max-width: 1300px;
+}
+
+.card-container {
+    margin-top: 10px;
+}
+
+.admin-product-card {
+    height: 100px;
+    width: 100px;
+}
+
+.btn-admin-cards, .btn-modal {
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.btn-admin-cards:hover {
+    border: solid 2px black;
+}
+
+.btn-modify {
+    background-color: rgb(164, 211, 241);
+}
+
+.btn-delete {
+    background-color: rgb(227, 156, 156);
+}
+
+.btn-modal-cancel {
+    background-color: darkgray;
+}
+
+.btn-modal-save {
+    background-color: rgb(153, 225, 161);
+}
+
+.btn-modal-delete {
+    background-color: #f17373;
+}
+
+.containerBtnCreateProduct{
+    max-width: 130px;
+    height: 42px;
+    margin-left: 320px;
+    margin-top: -50px;
+    text-align: right;
+    align-items: right;
+}
+
+#btnCreateProduct {
+    background-color: rgb(94, 154, 233);
+}
+
+.column-sizes {
+
+    column-count: 3;
+    column-gap: 20px;
+}

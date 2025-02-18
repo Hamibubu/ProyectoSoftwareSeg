@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Sport</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/styles/base_template.css">
+    <link rel="stylesheet" href="/assets/styles/admin_styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/assets/scripts/base_script.js"></script>
+</head>
+<body class="d-flex flex-column">
+    <!-- Include Navbar -->
+    <div id="contenido-navbar"></div>
+    <div id="page-content">
+        <div class="admin-product-container">
+            <h1 class="w-25 px-3" id="">Productos</h1>
+            <div class="containerBtnCreateProduct">
+                <button class="btn-admin-cards btn-create" id="btnCreateProduct" data-toggle="modal" data-target="#createModal" data-whatever="@example">
+                    <i class="fa fa-plus" style="margin-right: 5px;"></i>Añadir
+                </button>
+            </div>
+            <hr>
+            <div class="container cards-container">
+                <div class="row" id="cardRow" style="margin: 10px;">
+                    <!-- <div class="col-12 col-md-6 col-lg-3 card-container">
+                        <div class="card">
+                            <img src="https://tienda.leonesnegrosudg.mx/wp-content/uploads/2022/02/jerseyvisitante2122_799.jpg" class="card-img-top" alt="...">
+                            <div class="card-body" id="cardBody">
+                                <h5 class="card-title">Producto 1</h5>
+                                <span>$500.00 mxn</span><br>
+                                <span>Stock: 5</span><hr>
+                                <button class="btn-admin-cards btn-modify" data-toggle="modal" data-target="#modifyModal" data-whatever="@example">
+                                    <i class="fa fa-edit" style="margin-right: 5px;"></i>Modificar
+                                </button>
+                                <button class="btn-admin-cards btn-delete" data-toggle="modal" data-target="#deleteModal">
+                                    <i class="fa fa-trash" style="margin-right: 5px;"></i>Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <script src="/assets/scripts/admin_list_products.js"></script>
+            </div>
+        </div>
+        <!-- Modal to create any product -->
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Añadir Producto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/admin/crear_producto" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="txtNombre" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="txtPrecio" name="nombre" placeholder="Producto 1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtPrecio" class="col-form-label">Precio (mxn): </label>
+                                <input type="number" class="form-control" id="txtPrecio" name="precio" placeholder="500" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtStock" class="col-form-label">Stock: </label>
+                                <input type="number" class="form-control" id="txtStock" name="stock" placeholder="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="selectCategoria" class="col-form-label">Categoria: </label>
+                                <select class="custom-select mr-sm-2" name="categoria" id="selectCategoria" onchange="habilitarCheckboxes('C')" required>
+                                    <option value="" disabled selected>Seleccionar...</option>
+                                    <option value="Accesorios">Accesorios</option>
+                                    <option value="Jerseys">Jerseys</option>
+                                    <option value="Calzado">Calzado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="selectMarca" class="col-form-label">Marca: </label>
+                                <select class="custom-select mr-sm-2" name="marca" id="selectMarca" required>
+                                    <option value="" disabled selected>Seleccionar...</option>
+                                    <option value="Nike">Nike</option>
+                                    <option value="Adidas">Adidas</option>
+                                    <option value="Puma">Puma</option>
+                                    <option value="Under Armour">Under Armour</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Genero: </label>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="genderRadio1" name="genero" class="custom-control-input" value="Hombre">
+                                    <label class="custom-control-label" for="genderRadio1">Hombre</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="genderRadio2" name="genero" class="custom-control-input" value="Mujer">
+                                    <label class="custom-control-label" for="genderRadio2">Mujer</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="genderRadio3" name="genero" class="custom-control-input" value="Unisex" checked>
+                                    <label class="custom-control-label" for="genderRadio3">Unisex</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Descripción:</label>
+                                <textarea class="form-control" id="message-text" name="descripcion" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <fieldset>
+                                    <label class="col-form-label">Tallas:</label>
+                                  
+                                    <div id="initial-container">
+                                        <p><i>Seleccione una Categoria para mostrar las tallas.</i></p>
+                                    </div>
+
+                                    <div class="column-sizes" id="tallas-jerseys-container" style="display: none;">
+                                        <div>
+                                            <input type="checkbox" id="xs" name="jerseysXS" value="XS" checked/>
+                                            <label for="xs">XS</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="s" name="jerseysS" value="S"/>
+                                            <label for="s">S</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="m" name="jerseysM" value="M"/>
+                                            <label for="m">M</label>
+                                        </div>
+                            
+                                        <div>
+                                            <input type="checkbox" id="g" name="jerseysG" value="G"/>
+                                            <label for="g">G</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="xg" name="jerseysXG" value="XG"/>
+                                            <label for="xg">XG</label>
+                                        </div>
+                                    </div>
+                            
+                                    <div class="column-sizes" id="tallas-calzado-container" style="display: none;">
+                                        <div>
+                                            <input type="checkbox" id="23" name="calzado23" value="23" checked />
+                                            <label for="23">23</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="24" name="calzado24" value="24"/>
+                                            <label for="24">24</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="25" name="calzado25" value="25"/>
+                                            <label for="25">25</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="26" name="calzado26" value="26"/>
+                                            <label for="26">26</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="27" name="calzado27" value="27"/>
+                                            <label for="27">27</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="28" name="calzado28" value="28"/>
+                                            <label for="28">28</label>
+                                        </div>
+                                    </div>
+                            
+                                    <div class="column-sizes" id="tallas-accesorios-container" style="display: none;">
+                                        <div>
+                                            <input type="checkbox" id="unica" name="accesoriosUnica" value="Talla Única"checked />
+                                            <label for="unica">Talla Única</label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputFile" class="col-form-label">Imagen de Producto:</label>
+                                <input type="file" class="form-control" id="inputFile" name="file" accept=".jpg, .jpeg, .png" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn-modal btn-modal-cancel" data-dismiss="modal">
+                                    Cancelar<i class="fa fa-ban" style="margin-left: 5px;"></i>
+                                </button>
+                                <button type="submit" class="btn-modal btn-modal-save">
+                                    Guardar<i class="fa fa-save" style="margin-left: 5px;" onclick="spinner()"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal to modify any product -->
+        <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modificar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/admin/editar_producto" id="modifyForm" enctype="multipart/form-data">
+                        <h5 id="updateModalProductName"></h5><hr>
+                        <div class="form-group">
+                            <label for="txtNombre" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="txtNombreU" name="nombre" placeholder="Producto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtPrecio" class="col-form-label">Precio (mxn): </label>
+                            <input type="text" class="form-control" id="txtPrecioU" name="precio" placeholder="$ 0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtStock" class="col-form-label">Stock: </label>
+                            <input type="text" class="form-control" id="txtStockU" name="stock" placeholder="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectCategoria" class="col-form-label">Categoria: </label>
+                            <select class="custom-select mr-sm-2" name="categoria" id="selectCategoriaU" onopen="habilitarCheckboxes('U')" onchange="habilitarCheckboxes('U')" required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                                <option value="Accesorios">Accesorios</option>
+                                <option value="Jerseys">Jerseys</option>
+                                <option value="Calzado">Calzado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectMarca" class="col-form-label">Marca: </label>
+                            <select class="custom-select mr-sm-2" name="marca" id="selectMarcaU" required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                                <option value="Nike">Nike</option>
+                                <option value="Adidas">Adidas</option>
+                                <option value="Puma">Puma</option>
+                                <option value="Under Armour">Under Armour</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Genero: </label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="genderRadio1U" name="generoU" class="custom-control-input" value="Hombre">
+                                <label class="custom-control-label" for="genderRadio1U">Hombre</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="genderRadio2U" name="generoU" class="custom-control-input" value="Mujer">
+                                <label class="custom-control-label" for="genderRadio2U">Mujer</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="genderRadio3U" name="generoU" class="custom-control-input" value="Unisex" checked>
+                                <label class="custom-control-label" for="genderRadio3U">Unisex</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDescripcionU" class="col-form-label">Descripción:</label>
+                            <textarea class="form-control" id="txtDescripcionU" name="descripcion" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <fieldset>
+                                <label class="col-form-label">Tallas:</label>
+                              
+                                <div id="initial-containerU">
+                                    <p><i>Seleccione una Categoria para mostrar las tallas.</i></p>
+                                </div>
+
+                                <div class="column-sizes" id="tallas-jerseys-containerU" style="display: none;" >
+                                    <div>
+                                        <input type="checkbox" id="xsU" class="checkboxOption" name="jerseysXS" value="XS" checked/>
+                                        <label for="xs">XS</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="sU" class="checkboxOption" name="jerseysS" value="S"/>
+                                        <label for="s">S</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="mU" class="checkboxOption" name="jerseysM" value="M"/>
+                                        <label for="m">M</label>
+                                    </div>
+                        
+                                    <div>
+                                        <input type="checkbox" id="gU" class="checkboxOption" name="jerseysG" value="G"/>
+                                        <label for="g">G</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="xgU" class="checkboxOption" name="jerseysXG" value="XG"/>
+                                        <label for="xg">XG</label>
+                                    </div>
+                                </div>
+                        
+                                <div class="column-sizes" id="tallas-calzado-containerU" style="display: none;">
+                                    <div>
+                                        <input type="checkbox" id="23U" class="checkboxOption" name="calzado23" value="23" checked />
+                                        <label for="23">23</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="24U" class="checkboxOption" name="calzado24" value="24"/>
+                                        <label for="24">24</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="25U" class="checkboxOption" name="calzado25" value="25"/>
+                                        <label for="25">25</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="26U" class="checkboxOption" name="calzado26" value="26"/>
+                                        <label for="26">26</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="27U" class="checkboxOption" name="calzado27" value="27"/>
+                                        <label for="27">27</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="28U" class="checkboxOption" name="calzado28" value="28"/>
+                                        <label for="28">28</label>
+                                    </div>
+                                </div>
+                        
+                                <div class="column-sizes" id="tallas-accesorios-containerU" style="display: none;">
+                                    <div>
+                                        <input type="checkbox" id="unica" class="checkboxOption" name="accesoriosUnica" value="Talla Única" checked />
+                                        <label for="unica">Talla Única</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFileU" class="col-form-label">Imagen de Producto:</label>
+                            <input type="file" class="form-control" id="inputFileU" name="fileU" accept=".jpg, .jpeg, .png" disabled>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-modal btn-modal-cancel" data-dismiss="modal">
+                                Cancelar<i class="fa fa-ban" style="margin-left: 5px;"></i>
+                            </button>
+                            <button type="submit" class="btn-modal btn-modal-save">
+                                Guardar<i class="fa fa-save" style="margin-left: 5px;"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+
+          <!-- Modal to delete any product -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Esta seguro que desea eliminar el producto <b><i id="deleteModalProductName"></i></b>?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-modal btn-modal-cancel" data-bs-dismiss="modal" data-dismiss="modal">
+                            Cancelar<i class="fa fa-ban" style="margin-left: 5px;"></i>
+                        </button>
+                        <form method="POST" action="/admin/eliminar_producto" id="deleteForm">
+                            <button type="submit" class="btn-modal btn-modal-delete">
+                                Eliminar<i class="fa fa-eraser" style="margin-left: 5px;"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="loading-spinner" style="display: none;">Loading...</div>
+    </div>
+    <script src="/assets/scripts/admin_modal.js"></script>
+
+    <!-- Include Footer -->
+    <div id="contenido-footer"></div>
+    <script src="/assets/scripts/searchBar.js"></script>
+
+</body>
+</html>
+
+
