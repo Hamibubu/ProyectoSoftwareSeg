@@ -3,101 +3,168 @@ const contactUs = require('./../models/contacto');
 const Delivery = require('./../models/delivery');
 const jwt = require('jsonwebtoken');
 const cart = require('./../controllers/cart');
+const bcrypt = require('bcrypt')
 require('dotenv').config();
 
 class UserController {
     login_usuario(req, res) {
-        console.log('Se solicito iniciar sesión.');
-        const {correo, contraseña} = req.body;
-        
-        User.findOne({correo, contraseña})
-            .then(response => {
-                if (response) {
-                    const {_id, correo, rol} = response;
-                    console.log(`La secretKey es = ${process.env.SECRET_KEY}`);
-                    const token = jwt.sign({_id, correo, rol}, process.env.SECRET_KEY);
-                    console.log(`El token de usuario es: ${token}`);
-                    res.cookie('token',token);
+        try {
+            console.log('Se solicito iniciar sesión.');
+            const { correo, contraseña } = req.body;
+    
+            // Validación básica
+            if (!correo || !contraseña) {
+                return res.status(400).send('<script>alert("Correo y contraseña son requeridos."); window.location = "/login";</script>');
+            }
+    
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}$/;
+            if (!emailRegex.test(correo)) {
+                return res.status(400).send('<script>alert("Por favor ingresa un correo electrónico válido."); window.location = "/login";</script>');
+            }
 
-                    if (response.rol === 'admin') {
-                        res.redirect('/admin');
+            // Buscar al usuario por correo
+            User.findOne({ correo })
+                .then(response => {
+                    if (response) {
+                        // Verificar la contraseña hasheada con bcrypt
+                        bcrypt.compare(contraseña, response.contraseña, (err, isMatch) => {
+                            if (err) {
+                                console.log("Error al comparar las contraseñas:", err);
+                                return res.status(400).send('<script>alert("Sucedió un error al intentar iniciar sesión. Intente de nuevo."); window.location = "/login";</script>');
+                            }
+    
+                            if (isMatch) {
+                                // Las contraseñas coinciden
+                                const { _id, correo, rol } = response;
+                                const token = jwt.sign({ _id, correo, rol }, process.env.SECRET_KEY);
+                                res.cookie('token', token);
+    
+                                if (response.rol === 'admin') {
+                                    res.redirect('/admin');
+                                } else {
+                                    res.redirect('/');
+                                }
+                            } else {
+                                console.log("Contraseña incorrecta.");
+                                res.status(400).send('<script>alert("Usuario y/o contraseña no validos. Intente de nuevo."); window.location = "/login";</script>');
+                            }
+                        });
                     } else {
-                        res.redirect('/');
+                        console.log("El usuario no existe");
+                        res.status(400).send('<script>alert("Usuario y/o contraseña no validos. Intente de nuevo."); window.location = "/login";</script>');
                     }
-
-                } else {
-                    console.log("El usuario no existe");
-                    res.status(400).send('<script>alert("Usuario y/o contraseña no validos. Intente de nuevo."); window.location = "/login";</script>');
-                }
-            })
-            .catch(error => {
-                console.log("Login error: ", error);
-                res.status(400).send('<script>alert("Sucedio un error al intentar iniciar sesión. Intente de nuevo."); window.location = "/login";</script>');
-            })
+                })
+                .catch(error => {
+                    console.log("Login error: ", error);
+                    res.status(400).send('<script>alert("Sucedio un error al intentar iniciar sesión. Intente de nuevo."); window.location = "/login";</script>');
+                });
+        } catch (err) {
+            console.log("Error interno en login:", err);
+            res.send(500, "Error interno");
+        }
     }
 
     crear_usuario(req, res) {
-        console.log('Se solicito crear un usuario.');
-        const {nombre, apellido, telefono, correo, contraseña} = req.body;
+        try {
+            console.log('Se solicitó crear un usuario.');
+            let { nombre, apellido, telefono, correo, contraseña } = req.body;
 
-        User.findOne({correo})
-        .then(response => {
-            if (response) {
-                res.send(`<script>alert("Ya existe un usuario registrado con ese usuario. Inicie sesión o crea otra cuenta."); window.location = "/login";</script>`);
-            } else {
-                const newUser = new User({
-                    nombre: nombre,
-                    apellido: apellido,
-                    correo: correo,
-                    telefono: telefono || 'No agregado',
-                    contraseña: contraseña
-                })
-                
-                //Se manda el usuario a mongoDB
-                newUser.save()
-                .then(() => {
-                    //se obtiene el id y se llama la función de crear carrito.
-                    console.log(newUser._id);
-                    cart.crear_carrito(newUser._id);
-                    console.log('Nuevo Usuario: ', newUser);
-                    res.send(`<script>alert("Tu usuario ha sido creado exitosamente! Ahora inicia sesión."); window.location = "/";</script>`);
-                    
-                })
-                .catch(() => {
-                    res.send(`<script>alert("Ha ocurrido un error al intentar crear tu usuario. Intenta de nuevo."); window.location = "/login";</script>`);
-                });
+            // -------- Validación y sanitización --------
+            const sanitize = (str) => String(str || '')
+                .trim()
+                .replace(/[<>'"$\\{}]/g, '');
+
+            nombre = sanitize(nombre);
+            apellido = sanitize(apellido);
+            telefono = sanitize(telefono || 'No agregado');
+            correo = sanitize(correo).toLowerCase();
+            contraseña = String(contraseña || '').trim();
+
+            // Validar formato de email básico
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(correo)) {
+                return res.send(`<script>alert("Correo inválido. Intenta con uno válido."); window.location = "/login";</script>`);
             }
-        })
-        .catch(e => {
-            res.send(`<script>alert("Ha ocurrido un error al intentar verificar tu usuario. Intenta de nuevo."); window.location = "/login";</script>`);
-        })
+
+            // Validar campos requeridos
+            if (!nombre || !apellido || !correo || !contraseña) {
+                return res.send(`<script>alert("Todos los campos requeridos deben ser completados."); window.location = "/login";</script>`);
+            }
+
+            // -------- Búsqueda segura --------
+            User.findOne({ correo: correo })
+            .then(response => {
+                if (response) {
+                    res.send(`<script>alert("Ya existe un usuario registrado con ese correo. Inicia sesión o usa otro."); window.location = "/login";</script>`);
+                } else {
+                    // -------- Hashear la contraseña --------
+                    bcrypt.hash(contraseña, 10, (err, hashedPassword) => {
+                        if (err) {
+                            return res.send(`<script>alert("Error al procesar tu contraseña. Intenta de nuevo."); window.location = "/login";</script>`);
+                        }
+
+                        const newUser = new User({
+                            nombre,
+                            apellido,
+                            correo,
+                            telefono,
+                            contraseña: hashedPassword
+                        });
+
+                        newUser.save()
+                        .then(() => {
+                            cart.crear_carrito(newUser._id);
+                            console.log('Nuevo Usuario:', newUser);
+                            res.send(`<script>alert("Tu usuario ha sido creado exitosamente. Ahora inicia sesión."); window.location = "/";</script>`);
+                        })
+                        .catch(() => {
+                            res.send(`<script>alert("Error al crear tu usuario. Intenta de nuevo."); window.location = "/login";</script>`);
+                        });
+                    });
+                }
+            })
+            .catch(() => {
+                res.send(`<script>alert("Error al verificar tu usuario. Intenta de nuevo."); window.location = "/login";</script>`);
+            });
+        } catch (err) {
+            res.send(500, "Error interno");
+        }
     }
 
+
     createComment(req, res){
-        const { mensaje, correo, nombre } = req.body;
-        const contactRecord = new contactUs({
-            mensaje:mensaje,
-            correo: correo,
-            nombre:nombre
-        });
-        contactRecord.save().then(()=>{
-            res.json({state:true});
-        }).catch((err)=>{
-            console.log('an error has ocurred:', err);
-            res.json({state:false, err});
-        });
+        try{
+            const { mensaje, correo, nombre } = req.body;
+            const contactRecord = new contactUs({
+                mensaje:mensaje,
+                correo: correo,
+                nombre:nombre
+            });
+            contactRecord.save().then(()=>{
+                res.json({state:true});
+            }).catch((err)=>{
+                console.log('an error has ocurred:', err);
+                res.json({state:false, err});
+            });
+        } catch (err) {
+            res.send(500,"Error interno");
+        }
     }
 
     listUserInformation(req, res) {
-        console.log(`Se solicito obtener la informacion del usuario con id = ${req.params.id}`);
-        const _id = req.params.id;
-        User.findById(_id).then(p => {
-            console.log(`usuario encontrado es: ${p}`);
-            res.json(p);
-        }).catch(e => {
-            console.log("Ha ocurrido un error al intentar obtener la informacion del usuario");
-            res.send("Ha ocurrido un error al intentar obtener la informacion del usuario");
-        })
+        try{
+            console.log(`Se solicito obtener la informacion del usuario con id = ${req.params.id}`);
+            const _id = req.params.id;
+            User.findById(_id).then(p => {
+                console.log(`usuario encontrado es: ${p}`);
+                res.json(p);
+            }).catch(e => {
+                console.log("Ha ocurrido un error al intentar obtener la informacion del usuario");
+                res.send("Ha ocurrido un error al intentar obtener la informacion del usuario");
+            })
+        } catch (err) {
+            res.send(500,"Error interno");
+        }
     }
 }
 
