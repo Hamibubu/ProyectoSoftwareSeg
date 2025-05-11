@@ -62,6 +62,7 @@
                     </div>
                     <div class="modal-body">
                         <form method="POST" action="/admin/crear_producto" enctype="multipart/form-data">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <div class="form-group">
                                 <label for="txtNombre" class="col-form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="txtPrecio" name="nombre" placeholder="Producto 1" required>
@@ -210,6 +211,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="/admin/editar_producto" id="modifyForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <h5 id="updateModalProductName"></h5><hr>
                         <div class="form-group">
                             <label for="txtNombre" class="col-form-label">Nombre:</label>
@@ -362,6 +364,7 @@
                             Cancelar<i class="fa fa-ban" style="margin-left: 5px;"></i>
                         </button>
                         <form method="POST" action="/admin/eliminar_producto" id="deleteForm">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button type="submit" class="btn-modal btn-modal-delete">
                                 Eliminar<i class="fa fa-eraser" style="margin-left: 5px;"></i>
                             </button>

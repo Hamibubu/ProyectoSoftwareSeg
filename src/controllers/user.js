@@ -37,7 +37,12 @@ class UserController {
                                 // Las contraseñas coinciden
                                 const { _id, correo, rol } = response;
                                 const token = jwt.sign({ _id, correo, rol }, process.env.SECRET_KEY);
-                                res.cookie('token', token);
+                                res.cookie('token', token, {
+                                    sameSite: 'lax',         
+                                    secure: true,          
+                                    maxAge: 24 * 60 * 60 * 1000, 
+                                    path: '/',           
+                                  });                                  
     
                                 if (response.rol === 'admin') {
                                     res.redirect('/admin');
@@ -155,12 +160,16 @@ class UserController {
         try{
             console.log(`Se solicito obtener la informacion del usuario con id = ${req.params.id}`);
             const _id = req.params.id;
+            if (_id !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
             User.findById(_id).then(p => {
                 console.log(`usuario encontrado es: ${p}`);
                 res.json(p);
             }).catch(e => {
                 console.log("Ha ocurrido un error al intentar obtener la informacion del usuario");
-                res.send("Ha ocurrido un error al intentar obtener la informacion del usuario");
+                res.send(500,"Error interno");
             })
         } catch (err) {
             res.send(500,"Error interno");

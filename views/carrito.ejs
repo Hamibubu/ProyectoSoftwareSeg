@@ -51,6 +51,7 @@
                 </div>
                 <form action="/cart/buy" method="POST">
                     <button class="btn"> <a href="/buy"></a> CHECKOUT </button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" id="userId" name="userId" value="">
                     <script>
                         function getCookie(name) {

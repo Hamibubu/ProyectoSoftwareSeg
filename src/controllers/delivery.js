@@ -7,6 +7,11 @@ class DeliveryController {
             console.log(`Se solicitó obtener delivery data del usuario con id = ${req.params.id}\n`);
     
             const userId = req.params.id;
+
+            if (userId !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
     
             // Sanitización: asegura que sea un string plano y no un objeto o valor peligroso
             if (typeof userId !== 'string' || userId.includes('$') || userId.includes('{') || userId.includes('}')) {
@@ -22,7 +27,7 @@ class DeliveryController {
                 }
             }).catch(e => {
                 console.log("Ha ocurrido un error al intentar obtener la informacion del usuario");
-                res.send("Ha ocurrido un error al intentar obtener la informacion del usuario");
+                res.send(500, "Error interno");
             });
         } catch (err) {
             res.send(500, "Error interno");
@@ -33,6 +38,11 @@ class DeliveryController {
         try {
             console.log(`\nSe solicitó crear datos de entrega para el usuario con id = ${req.body.userId}`);
     
+            if (req.body.userId !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
+
             const sanitize = str => typeof str === 'string' 
                 ? str.replace(/[<>'"$]/g, '') 
                 : '';
@@ -72,7 +82,12 @@ class DeliveryController {
     eliminar_datos_entrega(req, res) {
         try {
             console.log(`\nSe solicito eliminar datos de entrega con id = ${req.body.deliveryId} del usuario con id = ${req.body.userId}`);
-    
+            
+            if (req.body.userId !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
+
             // Sanitización
             const safeDeliveryId = String(req.body.deliveryId).replace(/["'\\]/g, c => '\\' + c);
             const safeUserId = String(req.body.userId).replace(/["'\\]/g, c => '\\' + c);

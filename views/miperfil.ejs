@@ -53,6 +53,7 @@
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="/miperfil/crear_datos_de_entrega">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <div class="form-group">
                             <label for="txtCalle" class="col-form-label">Calle:</label>
                             <input type="text" class="form-control" id="txtCalle" name="calle" placeholder="Calle" required>
@@ -109,6 +110,7 @@
                     <form method="POST" action="/miperfil/eliminar_datos_de_entrega" id="deleteForm">
                         <input type="text" name="deliveryId" id="txtDeliveryIdDelete" value="" hidden>
                         <input type="text" name="userId" id="txtUserIdDelete" value="" hidden>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" class="btn-modal btn-modal-delete">
                             Eliminar<i class="fa fa-eraser" style="margin-left: 5px;"></i>
                         </button>

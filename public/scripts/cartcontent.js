@@ -42,6 +42,7 @@ $(document).ready(function() {
             .done(function(img) {
                 console.log('file name;',img.filename);
                 var precioReal = data.precio * prdCounts[p];
+                const csrfToken = document.querySelector('input[name="_csrf"]').value;
                 const productsContainerText = `
     
                 <div class="row border-top border-bottom">
@@ -56,6 +57,7 @@ $(document).ready(function() {
                         </div>
                         <div class="col div-precio-producto" id="precioReal_${p}">$ ${precioReal} mxn<form class="formd" action="/cart/delete/${id}" method="POST">
                                 <button class="discreto"><span class="close">&#10005;</span></button>
+                                <input type="hidden" name="_csrf" value="${csrfToken}">
                                 <input type="hidden" id="productid" name="productid" value="${p}">
                                 <input type="hidden" id="userid" name="userid" value="${id}">
                             </form>  

@@ -1,20 +1,37 @@
-const express  = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
-const app = express();
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
 const upload = multer();
 require('dotenv').config();
+const session = require('express-session');
 const path = require('path');
+
+const app = express();
+
+app.use(session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: true
+  }));
+
+app.set('view engine', 'ejs');
 
 const routes = require('./src/routes/index');
 const port = process.env.PORT || 3001;
 
 app.use('/assets', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use((err, req, res, next) => {
+    if (err.code === 'EBADCSRFTOKEN') {
+      return res.status(403).send('⛔ Token CSRF inválido o faltante');
+    }
+    next(err);
+  });
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname,'public', 'views','index.html'));

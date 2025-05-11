@@ -9,14 +9,17 @@ const file = require('./../middlewares/file');
 const authMiddleware = require('./../middlewares/auth');
 const roleMiddleware = require('./../middlewares/role')
 const path = require('path');
+const csrf = require('csurf');
+
+const csrfProtection = csrf({ cookie: false }); // O true si usás cookies
 
 // =============================================
 // RUTAS DE VISTAS (HTML)
 // =============================================
 
 // Vistas de autenticación
-router.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname,'./../../public/views/login.html'));
+router.get('/login', csrfProtection, (req, res) => {
+    res.render('login', { csrfToken: req.csrfToken() });
 });
 
 router.get('/terminos', (req, res) => {
@@ -24,13 +27,13 @@ router.get('/terminos', (req, res) => {
 });
 
 // Vistas de perfil de usuario
-router.get('/miperfil/:id', authMiddleware, (req, res) => {
-    res.sendFile(path.join(__dirname,'./../../public/views/miperfil.html'));
+router.get('/miperfil/:id', csrfProtection, authMiddleware, (req, res) => {
+    res.render('miperfil', { csrfToken: req.csrfToken() });
 });
 
 // Vistas de administración
-router.get('/admin', authMiddleware, roleMiddleware, (req, res) => {
-    res.sendFile(path.join(__dirname,'./../../public/views/admin.html'));
+router.get('/admin', csrfProtection, authMiddleware, roleMiddleware, (req, res) => {
+    res.render('admin', { csrfToken: req.csrfToken() });
 });
 
 // Vistas de productos
@@ -38,8 +41,8 @@ router.get('/productos', (req, res) => {
     res.sendFile(path.join(__dirname,'./../../public/views/productos.html'));
 });
 
-router.get('/productos/Producto', (req, res) => {
-    res.sendFile(path.join(__dirname,'./../../public/views/Producto.html'));
+router.get('/productos/Producto', csrfProtection, (req, res) => {
+    res.render('Producto', { csrfToken: req.csrfToken() });
 });
 
 router.get('/productos/accesorios', (req, res) => {
@@ -55,12 +58,12 @@ router.get('/productos/calzados', (req, res) => {
 });
 
 // Vistas de carrito
-router.get('/cart', authMiddleware, (req, res) => {
-    res.sendFile(path.join(__dirname,'./../../public/views/carrito.html'));
+router.get('/cart', csrfProtection, authMiddleware, (req, res) => {
+    res.render('carrito', { csrfToken: req.csrfToken() });
 });
 
-router.get('/cart/:id', authMiddleware, (req, res) => {
-    res.sendFile(path.join(__dirname,'./../../public/views/carrito.html'));
+router.get('/cart/:id', csrfProtection, authMiddleware, (req, res) => {
+    res.render('carrito', { csrfToken: req.csrfToken() });
 });
 
 // Otras vistas
@@ -77,8 +80,8 @@ router.get('/about_us', (req, res) => {
 // =============================================
 
 // Rutas de autenticación y usuarios
-router.post('/login/crear_usuario', usuariosController.crear_usuario);
-router.post('/login/iniciar_sesion', usuariosController.login_usuario);
+router.post('/login/crear_usuario', csrfProtection, usuariosController.crear_usuario);
+router.post('/login/iniciar_sesion', csrfProtection, usuariosController.login_usuario);
 router.get('/miperfil/userinformation/:id', authMiddleware, usuariosController.listUserInformation);
 router.post('/about_us', usuariosController.createComment);
 
@@ -93,9 +96,9 @@ router.get('/productos', productosController.listar_productos);
 // Rutas de administración de productos
 router.get('/admin/ver_producto/:id', authMiddleware, roleMiddleware, productosController.ver_producto);
 router.get('/admin/listar_productos', authMiddleware, roleMiddleware, productosController.listar_productos);
-router.post('/admin/crear_producto', authMiddleware, roleMiddleware, file.single('file'), productosController.crear_productos);
-router.post('/admin/editar_producto/:id', authMiddleware, roleMiddleware, file.single('fileU'), productosController.editar_productos);
-router.post('/admin/eliminar_producto/:id', authMiddleware, roleMiddleware, productosController.eliminar_productos);
+router.post('/admin/crear_producto', file.single('file'), csrfProtection, authMiddleware, roleMiddleware, productosController.crear_productos);
+router.post('/admin/editar_producto/:id', file.single('fileU'), csrfProtection, authMiddleware, roleMiddleware, productosController.editar_productos);
+router.post('/admin/eliminar_producto/:id', csrfProtection, authMiddleware, roleMiddleware, productosController.eliminar_productos);
 
 // Rutas de imágenes
 router.get('/productos/listar_imagen_producto/:id', filesController.listar_imagen_producto);
@@ -103,16 +106,16 @@ router.get('/admin/listar_imagenes', authMiddleware, roleMiddleware, filesContro
 router.get('/admin/listar_imagen_producto/:id', authMiddleware, roleMiddleware, filesController.listar_imagen_producto);
 
 // Rutas de carrito
-router.get('/cart/content/:id', carritoController.listar_carrito);
-router.post('/cart/addProductToCart', authMiddleware, carritoController.añadir_producto);
-router.post('/cart/buy', authMiddleware, carritoController.compra);
-router.post('/cart/delete/:id', authMiddleware, carritoController.borrar_producto);
+router.get('/cart/content/:id', authMiddleware, carritoController.listar_carrito);
+router.post('/cart/addProductToCart', csrfProtection, authMiddleware, carritoController.añadir_producto);
+router.post('/cart/buy', csrfProtection, authMiddleware, carritoController.compra);
+router.post('/cart/delete/:id', csrfProtection, authMiddleware, carritoController.borrar_producto);
 router.get('/cart/ver_producto/:id', authMiddleware, productosController.ver_producto);
 
 // Rutas de delivery
 router.get('/miperfil/deliveryinformation/:id', authMiddleware, deliveryController.listUserDeliveryData);
-router.post('/miperfil/crear_datos_de_entrega', authMiddleware, deliveryController.crear_datos_entrega);
-router.post('/miperfil/eliminar_datos_de_entrega', authMiddleware, deliveryController.eliminar_datos_entrega);
+router.post('/miperfil/crear_datos_de_entrega', csrfProtection, authMiddleware, deliveryController.crear_datos_entrega);
+router.post('/miperfil/eliminar_datos_de_entrega', csrfProtection, authMiddleware, deliveryController.eliminar_datos_entrega);
 
 // Rutas de noticias
 router.get('/showNoticias', noticiasController.get_noticias);

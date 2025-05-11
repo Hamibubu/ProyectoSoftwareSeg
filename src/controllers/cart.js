@@ -12,6 +12,11 @@ class CartContoller {
             // Sanitización
             const id = String(req.params.id).replace(/[^a-zA-Z0-9]/g, '');
     
+            if (id !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
+
             // Realiza la búsqueda en la base de datos
             Cart.findOne({ "id": id }).then(c => {
                 if (c) {
@@ -19,15 +24,15 @@ class CartContoller {
                     res.json(c);
                 } else {
                     console.log("Carrito no encontrado");
-                    res.status(404).send("Carrito no encontrado.");
+                    res.send(404, "Carrito no encontrado.");
                 }
             }).catch(e => {
                 console.log("Ha ocurrido un error al intentar obtener la información del carrito", e);
-                res.status(500).send("Ha ocurrido un error al intentar obtener la información del carrito");
+                res.send(500,"Error interno");
             });
         } catch (err) {
             console.log("Error interno:", err);
-            res.status(500).send("Error interno");
+            res.send(500,"Error interno");
         }
     }
     
@@ -50,6 +55,11 @@ class CartContoller {
             const userId = String(req.body.userId).replace(/[^a-zA-Z0-9]/g, ''); 
             const productId = String(req.body.productId).replace(/[^a-zA-Z0-9]/g, ''); 
     
+            if (userId !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
+
             console.log(`PRODUCTOS CARRITO: ${productId} and ${userId} & ${req.body.talla}`);
     
             // Ahora utilizamos los valores sanitizados en la consulta
@@ -75,6 +85,11 @@ class CartContoller {
             const userId = String(req.body.userid).replace(/[^a-zA-Z0-9]/g, '');
             const productId = String(req.body.productid).replace(/[^a-zA-Z0-9]/g, '');
     
+            if (userId !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
+
             console.log(`productos: ${productId}`);
     
             // Usamos los valores sanitizados para realizar la consulta
@@ -98,6 +113,10 @@ class CartContoller {
         try{
             console.log(`\nCARRITO:  ${req.body.userId}  `);
             const userId = String(req.body.userId).replace(/[^a-zA-Z0-9]/g, '');
+            if (userId !== req.user._id){
+                res.send(401, "No estas autorizado");
+                return;
+            }
             Cart.findOne({"id": userId})
             .then(c => {
                 console.log(`Carroooooo: ${c}`);
