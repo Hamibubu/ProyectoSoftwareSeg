@@ -63,7 +63,7 @@ mongoose.connect(mongoUrl, {
     dbName: process.env.DB,
 }).then(() => {
     // Correr aplicación por el puerto definido
-    app.listen(port, () => {
+    app.listen(port, '0.0.0.0', () => {
         console.log(`La aplicacion esta corriendo en el puerto ${port}`);
     });
 }).catch(err => {
