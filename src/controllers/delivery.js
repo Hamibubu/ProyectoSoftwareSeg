@@ -13,9 +13,12 @@ class DeliveryController {
                 return;
             }
     
-            // Sanitización: asegura que sea un string plano y no un objeto o valor peligroso
-            if (typeof userId !== 'string' || userId.includes('$') || userId.includes('{') || userId.includes('}')) {
-                return res.send("Ha ocurrido un error al intentar obtener la informacion del usuario");
+            // Sanitización
+
+            const hexOnlyRegex = /^[a-fA-F0-9]+$/;
+
+            if (typeof userId !== 'string' || !hexOnlyRegex.test(userId)) {
+                return res.send(`<script>alert("ID de usuario no válido."); window.location = "/login";</script>`);
             }
     
             delivery.find({ user_id: userId }).then(d => {
@@ -48,7 +51,9 @@ class DeliveryController {
                 : '';
     
             const userId = req.body.userId;
-            if (typeof userId !== 'string' || userId.includes('$') || userId.includes('{') || userId.includes('}')) {
+            const hexOnlyRegex = /^[a-fA-F0-9]+$/;
+
+            if (typeof userId !== 'string' || !hexOnlyRegex.test(userId)) {
                 return res.send(`<script>alert("ID de usuario no válido."); window.location = "/login";</script>`);
             }
     
@@ -61,8 +66,6 @@ class DeliveryController {
                 referencias: req.body.referencias ? sanitize(req.body.referencias) : "No se agregaron referencias",
                 user_id: userId
             });
-
-            const safeUserId = String(req.body.userId).replace(/["'\\]/g, c => '\\' + c);
     
             newDelivery.save()
             .then(d => {
@@ -89,8 +92,8 @@ class DeliveryController {
             }
 
             // Sanitización
-            const safeDeliveryId = String(req.body.deliveryId).replace(/["'\\]/g, c => '\\' + c);
-            const safeUserId = String(req.body.userId).replace(/["'\\]/g, c => '\\' + c);
+            const safeDeliveryId = String(req.body.deliveryId).replace(/[&<>"'`=\/{}()$\\]/g, c => `\\${c}`);
+            const safeUserId = String(req.body.userId).replace(/[&<>"'`=\/{}()$\\]/g, c => `\\${c}`);
     
             // Procedemos a eliminar los datos de entrega
             delivery.deleteOne({ "_id": safeDeliveryId })

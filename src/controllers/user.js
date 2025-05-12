@@ -160,6 +160,10 @@ class UserController {
         try{
             console.log(`Se solicito obtener la informacion del usuario con id = ${req.params.id}`);
             const _id = req.params.id;
+            const hexOnlyRegex = /^[a-fA-F0-9]+$/;
+            if (!hexOnlyRegex.test(_id)) {
+                return res.status(400).send("ID de usuario inválido");
+            }
             if (_id !== req.user._id){
                 res.send(401, "No estas autorizado");
                 return;

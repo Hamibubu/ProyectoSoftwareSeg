@@ -11,7 +11,7 @@ const roleMiddleware = require('./../middlewares/role')
 const path = require('path');
 const csrf = require('csurf');
 
-const csrfProtection = csrf({ cookie: false }); // O true si usás cookies
+const csrfProtection = csrf({ cookie: false });
 
 // =============================================
 // RUTAS DE VISTAS (HTML)

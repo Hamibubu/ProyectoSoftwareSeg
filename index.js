@@ -56,11 +56,11 @@ app.get('*', (req, res) => {
 })
 
 // Conexion a la BD
-const mongoUrl = 'mongodb+srv://total_sport_user:total_sport_user@test.mygbwdt.mongodb.net/todos?retryWrites=true&w=majority';
+const mongoUrl = 'mongodb+srv://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.HOSTNAME+'/todos?retryWrites=true&w=majority';
 mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: 'total_sport_db',
+    dbName: process.env.DB,
 }).then(() => {
     // Correr aplicación por el puerto definido
     app.listen(port, () => {
